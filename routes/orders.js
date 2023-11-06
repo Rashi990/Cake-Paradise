@@ -3,7 +3,7 @@ const orders = require('../models/orders');
 
 const router = express.Router();
 
-//Save orders
+//add orders
 router.post('/order/save', async (req, res) => {
     try {
       const newOrder = new orders(req.body);
@@ -20,7 +20,68 @@ router.post('/order/save', async (req, res) => {
 
 
   //get orders
- // router.get('/orders')
+    router.get('/orders', async(req,res) => {
+
+        try{
+           const ordersList = await orders.find().exec(); 
+           res.status(200).json({
+                success:true,
+                existingOrders: ordersList,
+           });
+        }catch(error){
+            res.status(400).json({
+                error,
+            });
+        }
+            
+    });
+
+    //update orders
+    router.put('/order/update/:id', async (req,res)=>{
+
+        try{
+            const updateOrder = await orders.findByIdAndUpdate(
+                req.params.id,
+                {$set: req.body},
+                {new:true}
+            );
+
+            if(!updateOrder){
+                return res.status(400).json({
+                    success:false,
+                    message: "Order not updated"
+                });
+            }
+            res.status(200).json({
+                success:true,
+                message:"Order updated successfully",
+                //updateOrder,
+            });
+
+        }catch(error){
+            res.status(400).json({
+                success:false,
+                error,
+            });
+        }
+
+       
+    });
+
+    //delete order
+    router.delete('/order/delete/:id', (req,res)=>{
+        orders.findByIdAndRemove(
+            req.params.id).exec((err,deleteOrder)=>{
+
+                if(err)
+                    return res.status(400).json({
+                        message:"Delete unsuccessful",err
+                });
+                return res.status(200).json({
+                    message:"Delete successful",deleteOrder
+                });
+            });
+    });
 
 
 module.exports = router;
