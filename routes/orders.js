@@ -69,18 +69,31 @@ router.post('/order/save', async (req, res) => {
     });
 
     //delete order
-    router.delete('/order/delete/:id', (req,res)=>{
-        orders.findByIdAndRemove(
-            req.params.id).exec((err,deleteOrder)=>{
+    router.delete('/order/delete/:id', async (req,res)=>{
+        try {
+            const deleteOrder = await orders.findByIdAndDelete(
+                req.params.id,
 
-                if(err)
-                    return res.status(400).json({
-                        message:"Delete unsuccessful",err
+            );
+
+            if(!deleteOrder){
+                return res.status(400).json({
+                    success:false,
+                    message: "Order cannot be deleted"
                 });
-                return res.status(200).json({
-                    message:"Delete successful",deleteOrder
-                });
+            }res.status(200).json({
+                success:true,
+                message: "Order successfully deleted",
+                //deleteOrder,
+            })
+
+        } catch (error) {
+            res.status(400).json({
+                success:false,
+                error,
             });
+            
+        }
     });
 
 
