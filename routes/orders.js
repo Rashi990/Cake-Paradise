@@ -8,12 +8,12 @@ router.post('/order/save', async (req, res) => {
     try {
       const newOrder = new orders(req.body);
       await newOrder.save();
-      res.status(200).json({
+      return res.status(200).json({
         success: "Order saved successfully"
       });
-    } catch (error) {
-      res.status(400).json({
-        error
+    } catch (err) {
+      return res.status(400).json({
+        error:err
       });
     }
   });
