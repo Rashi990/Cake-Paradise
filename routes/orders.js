@@ -3,7 +3,7 @@ const orders = require('../models/orders');
 
 const router = express.Router();
 
-//add orders
+//Add orders
 router.post('/order/save', async (req, res) => {
     try {
       const newOrder = new orders(req.body);
@@ -19,24 +19,24 @@ router.post('/order/save', async (req, res) => {
   });
 
 
-  //get orders
+  //Get all orders
     router.get('/orders', async(req,res) => {
 
         try{
            const ordersList = await orders.find().exec(); 
-           res.status(200).json({
+           return res.status(200).json({
                 success:true,
                 existingOrders: ordersList,
            });
-        }catch(error){
-            res.status(400).json({
-                error,
+        }catch(err){
+            return res.status(400).json({
+                error:err
             });
         }
             
     });
 
-    //update orders
+    //Update orders
     router.put('/order/update/:id', async (req,res)=>{
 
         try{
@@ -58,10 +58,10 @@ router.post('/order/save', async (req, res) => {
                 //updateOrder,
             });
 
-        }catch(error){
+        }catch(err){
             res.status(400).json({
                 success:false,
-                error,
+                error:err
             });
         }
 
