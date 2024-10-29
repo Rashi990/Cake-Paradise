@@ -36,7 +36,7 @@ router.post('/order/save', async (req, res) => {
             
     });
 
-    //update orders
+    //Update orders
     router.put('/order/update/:id', async (req,res)=>{
 
         try{
@@ -58,10 +58,10 @@ router.post('/order/save', async (req, res) => {
                 //updateOrder,
             });
 
-        }catch(error){
+        }catch(err){
             res.status(400).json({
                 success:false,
-                error,
+                error:err
             });
         }
 
