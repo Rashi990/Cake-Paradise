@@ -52,14 +52,14 @@ router.post('/order/save', async (req, res) => {
                     message: "Order not updated"
                 });
             }
-            res.status(200).json({
+            return res.status(200).json({
                 success:true,
                 message:"Order updated successfully",
                 //updateOrder,
             });
 
         }catch(err){
-            res.status(400).json({
+            return res.status(400).json({
                 success:false,
                 error:err
             });
@@ -68,7 +68,7 @@ router.post('/order/save', async (req, res) => {
        
     });
 
-    //delete order
+    //Delete order
     router.delete('/order/delete/:id', async (req,res)=>{
         try {
             const deleteOrder = await orders.findByIdAndDelete(
@@ -81,16 +81,16 @@ router.post('/order/save', async (req, res) => {
                     success:false,
                     message: "Order cannot be deleted"
                 });
-            }res.status(200).json({
+            }return res.status(200).json({
                 success:true,
                 message: "Order successfully deleted",
                 //deleteOrder,
             })
 
-        } catch (error) {
-            res.status(400).json({
+        } catch (err) {
+            return res.status(400).json({
                 success:false,
-                error,
+                error:err
             });
             
         }
