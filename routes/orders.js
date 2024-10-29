@@ -81,14 +81,14 @@ router.post('/order/save', async (req, res) => {
                     success:false,
                     message: "Order cannot be deleted"
                 });
-            }res.status(200).json({
+            }return res.status(200).json({
                 success:true,
                 message: "Order successfully deleted",
                 //deleteOrder,
             })
 
         } catch (err) {
-            res.status(400).json({
+            return res.status(400).json({
                 success:false,
                 error:err
             });
